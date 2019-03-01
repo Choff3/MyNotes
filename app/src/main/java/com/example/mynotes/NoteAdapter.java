@@ -34,12 +34,10 @@ public class NoteAdapter extends ArrayAdapter<Note> {
                 v = vi.inflate(R.layout.list_item, null);
             }
 
-            TextView noteTitle = (TextView) v.findViewById(R.id.textNoteTitle); //textview object for note title
+            TextView noteTitle = (TextView) v.findViewById(R.id.textNoteTitle);
 
             Button b = (Button) v.findViewById(R.id.buttonDeleteNote);
-            note.setTitle(note.getTitle());
-
-            b.setVisibility(View.INVISIBLE);
+            noteTitle.setText(note.getTitle());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -48,26 +46,20 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         return v;
     }
 
-    public void showDelete(final int position, final View convertView,final Context context, final Note note) {
+    public void showDelete(final View convertView,final Context context, final Note note) {
         View v = convertView;
         final Button b = (Button) v.findViewById(R.id.buttonDeleteNote);
-        //2
-        if (b.getVisibility()==View.INVISIBLE) {
-            b.setVisibility(View.VISIBLE);
+
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    hideDelete(position, convertView, context);
                     items.remove(note);
                     deleteOption(note.getNoteID(), context);
                 }
             });
-        }
-        else {
-            hideDelete(position, convertView, context);
-        }
+
     }
-    //3
+
     private void deleteOption(int noteToDelete, Context context) {
         NoteDataSource db = new NoteDataSource(context);
         try {
@@ -79,13 +71,6 @@ public class NoteAdapter extends ArrayAdapter<Note> {
             Toast.makeText(adapterContext, "Delete Note Failed", Toast.LENGTH_LONG).show();
         }
         this.notifyDataSetChanged();
-    }
-    //4
-    public void hideDelete(int position, View convertView, Context context) {
-        View v = convertView;
-        final Button b = (Button) v.findViewById(R.id.buttonDeleteNote);
-        b.setVisibility(View.INVISIBLE);
-        b.setOnClickListener(null);
     }
 
 }
