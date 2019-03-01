@@ -57,7 +57,7 @@ public class NoteDataSource {
             updateValues.put("date", String.valueOf(n.getDate().getSeconds()));
             updateValues.put("importance", String.valueOf(n.getImportance()));
 
-            didSucceed = database.update("contact", updateValues, "_id=" + rowId, null) > 0;
+            didSucceed = database.update("note", updateValues, "_id=" + rowId, null) > 0;
         }
         catch (Exception e) {
             //Do nothing -will return false if there is an exception
@@ -68,7 +68,7 @@ public class NoteDataSource {
     public int getLastNoteId() {
         int lastId = -1;
         try {
-            String query = "Select MAX(_id) from contact";
+            String query = "Select MAX(_id) from note";
             Cursor cursor = database.rawQuery(query, null);
 
             cursor.moveToFirst();
@@ -103,7 +103,7 @@ public class NoteDataSource {
     public ArrayList<Note> getNotes(String sortField) {
         ArrayList<Note> notes = new ArrayList<Note>();
         try {
-            String query = "SELECT  * FROM contact ORDER BY " + sortField;
+            String query = "SELECT  * FROM note ORDER BY " + sortField;
 
             Cursor cursor = database.rawQuery(query, null);
 
@@ -116,7 +116,7 @@ public class NoteDataSource {
                 newNote.setContent(cursor.getString(2));
                 newNote.setImportance(Integer.valueOf(cursor.getString(3)));
                 Date date = new Date();                         //2
-                date.setSeconds(Integer.valueOf(cursor.getString(9)));
+                date.setSeconds(Integer.valueOf(cursor.getString(4)));
                 newNote.setDate(date);
 
                 notes.add(newNote);
@@ -141,7 +141,7 @@ public class NoteDataSource {
         return didDelete;
     }
 
-    public Note getSpecificContact(int noteId) {
+    public Note getSpecificNote(int noteId) {
         Note note = new Note();
         String query = "SELECT  * FROM note WHERE _id =" + noteId;
         Cursor cursor = database.rawQuery(query, null);
@@ -152,7 +152,7 @@ public class NoteDataSource {
             note.setContent(cursor.getString(2));
             note.setImportance(Integer.valueOf(cursor.getString(3)));
             Date date = new Date();                         //2
-            date.setSeconds(Integer.valueOf(cursor.getString(9)));
+            date.setSeconds(Integer.valueOf(cursor.getString(4)));
             note.setDate(date);
 
             cursor.close();
