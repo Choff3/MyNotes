@@ -24,7 +24,6 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         initNewButton();
-       // initDeleteButton();
     }
 
     @Override
@@ -52,13 +51,10 @@ public class ListActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                     Note selectedNote = notes.get(position);
-                    if (isDeleting) {
-                        adapter.showDelete(position, itemClicked, ListActivity.this, selectedNote);
-                    } else {
-                        Intent intent = new Intent(ListActivity.this, NoteActivity.class);
-                        intent.putExtra("noteid", selectedNote.getNoteID());
-                        startActivity(intent);
-                    }
+                    adapter.showDelete(itemClicked, ListActivity.this, selectedNote);
+                    Intent intent = new Intent(ListActivity.this, NoteActivity.class);
+                    intent.putExtra("noteid", selectedNote.getNoteID());
+                    startActivity(intent);
                 }
             });
         }
@@ -67,23 +63,6 @@ public class ListActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
-    /* private void initDeleteButton() {
-        final Button deleteButton = (Button) findViewById(R.id.buttonDelete);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (isDeleting) {
-                    deleteButton.setText("Delete");
-                    isDeleting = false;
-                    adapter.notifyDataSetChanged();
-                }
-                else {
-                    deleteButton.setText("Done Deleting");
-                    isDeleting = true;
-                }
-            }
-        });
-    } */
 
     private void initNewButton() {
         Button bNew = findViewById(R.id.button3);
