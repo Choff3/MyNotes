@@ -1,6 +1,7 @@
 package com.example.mynotes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,29 +36,34 @@ public class NoteAdapter extends ArrayAdapter<Note> {
             }
 
             TextView noteTitle = (TextView) v.findViewById(R.id.textNoteTitle);
-
-            Button b = (Button) v.findViewById(R.id.buttonDeleteNote);
             noteTitle.setText(note.getTitle());
         }
         catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
+
+        final Button bDelete = (Button) v.findViewById(R.id.buttonDeleteNote);
+        final Note note = items.get(position);
+
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                items.remove(note);
+                deleteOption(note.getNoteID(), adapterContext);
+            }
+        });
+
         return v;
     }
 
-    public void showDelete(final View convertView,final Context context, final Note note) {
-        View v = convertView;
-        final Button b = (Button) v.findViewById(R.id.buttonDeleteNote);
-
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    items.remove(note);
-                    deleteOption(note.getNoteID(), context);
-                }
-            });
-
+    public void Delete(final int position, final View view, final Context context, final Note note) {
+        Button bDelete = view.findViewById(R.id.buttonDeleteNote);
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                items.remove(note);
+                deleteOption(note.getNoteID(), context);
+            }
+        });
     }
 
     private void deleteOption(int noteToDelete, Context context) {

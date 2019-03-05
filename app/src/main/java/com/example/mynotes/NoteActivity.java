@@ -5,16 +5,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import java.util.Date;
 
 public class NoteActivity extends AppCompatActivity {
 
     private Note currentNote;
+    RadioButton rbHigh, rbMed, rbLow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +33,46 @@ public class NoteActivity extends AppCompatActivity {
         initImportanceClick();
         initTextChangedEvents();
 
-        currentNote = new Note();
+        rbHigh = (RadioButton) findViewById(R.id.radioButtonHigh);
+        rbMed = (RadioButton) findViewById(R.id.radioButtonMedium);
+        rbLow = (RadioButton) findViewById(R.id.radioButtonLow);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            initNote(extras.getInt("noteid"));
+        }
+        else {
+            currentNote = new Note();
+            rbLow.toggle();
+        }
+    }
+
+    private void initNote(int id) {
+
+        NoteDataSource ds = new NoteDataSource(NoteActivity.this);
+        try {
+            ds.open();
+            currentNote = ds.getSpecificNote(id);
+            ds.close();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Load Note Failed", Toast.LENGTH_LONG).show();
+        }
+
+        EditText editTitle = (EditText) findViewById(R.id.editTitle);
+        EditText editContent = (EditText) findViewById(R.id.editContent);
+
+        editTitle.setText(currentNote.getTitle());
+        editContent.setText(currentNote.getContent());
+
+        switch (currentNote.getImportance()){
+            case 3: rbHigh.toggle();
+            break;
+            case 2: rbMed.toggle();
+            break;
+            default: rbLow.toggle();
+        }
+
     }
 
     private void initListButton() {
@@ -54,6 +100,7 @@ public class NoteActivity extends AppCompatActivity {
                         wasSuccessful = ds.insertNote(currentNote);
                         int newId = ds.getLastNoteId();
                         currentNote.setNoteID(newId);
+                        currentNote.setDate(new Date());
                     } else {
                         wasSuccessful = ds.updateNote(currentNote);
                     }
@@ -73,13 +120,10 @@ public class NoteActivity extends AppCompatActivity {
 
     private void initImportanceClick() {
         RadioGroup bgImportance = (RadioGroup) findViewById(R.id.radioGroupImportance);
+
         bgImportance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup arg0, int arg1) {
-                RadioButton rbHigh = (RadioButton) findViewById(R.id.radioButtonHigh);
-                RadioButton rbMed = (RadioButton) findViewById(R.id.radioButtonMedium);
-                RadioButton rbLow = (RadioButton) findViewById(R.id.radioButtonLow);
-
                 if (rbHigh.isChecked())
                     currentNote.setImportance(3);
                 else if (rbMed.isChecked())
