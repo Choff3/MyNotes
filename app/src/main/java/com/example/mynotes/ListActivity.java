@@ -46,13 +46,15 @@ public class ListActivity extends AppCompatActivity {
 
         if (notes.size() > 0) {
             ListView listView = (ListView) findViewById(R.id.lvNotes);
+
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
 
+                    adapter.Delete(position, itemClicked, ListActivity.this, selectedNote);
                     selectedNote = notes.get(position);
-                    adapter.showDelete(itemClicked, ListActivity.this, selectedNote);
                     Intent intent = new Intent(ListActivity.this, NoteActivity.class);
                     intent.putExtra("noteid", selectedNote.getNoteID());
                     startActivity(intent);

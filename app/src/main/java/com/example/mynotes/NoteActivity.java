@@ -56,7 +56,6 @@ public class NoteActivity extends AppCompatActivity {
 
         editTitle.setText(currentNote.getTitle());
         editContent.setText(currentNote.getContent());
-
     }
 
     private void initListButton() {
