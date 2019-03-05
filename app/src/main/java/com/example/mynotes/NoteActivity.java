@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.util.Date;
+
 public class NoteActivity extends AppCompatActivity {
 
     private Note currentNote;
@@ -97,6 +99,7 @@ public class NoteActivity extends AppCompatActivity {
                         wasSuccessful = ds.insertNote(currentNote);
                         int newId = ds.getLastNoteId();
                         currentNote.setNoteID(newId);
+                        currentNote.setDate(new Date());
                     } else {
                         wasSuccessful = ds.updateNote(currentNote);
                     }
