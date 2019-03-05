@@ -15,8 +15,8 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity {
 
     ArrayList<Note> notes;
-    boolean isDeleting = false;
     NoteAdapter adapter;
+    Note selectedNote;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,8 @@ public class ListActivity extends AppCompatActivity {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                    Note selectedNote = notes.get(position);
+
+                    selectedNote = notes.get(position);
                     adapter.showDelete(itemClicked, ListActivity.this, selectedNote);
                     Intent intent = new Intent(ListActivity.this, NoteActivity.class);
                     intent.putExtra("noteid", selectedNote.getNoteID());

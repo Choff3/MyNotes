@@ -46,7 +46,7 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         return v;
     }
 
-    public void showDelete(final View convertView,final Context context, final Note note) {
+    public void showDelete(final View convertView, final Context context, final Note note) {
         View v = convertView;
         final Button b = (Button) v.findViewById(R.id.buttonDeleteNote);
 
