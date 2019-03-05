@@ -81,11 +81,9 @@ public class ListActivity extends AppCompatActivity {
                 RadioButton rbImp = (RadioButton) findViewById(R.id.radioButtonImportance);
                 if (rbImp.isChecked()) {
                     getSharedPreferences("MyNoteListPreferences", Context.MODE_PRIVATE).edit() .putString("sortfield", "importance").commit();
-                    onResume();
                 }
                 else {
                     getSharedPreferences("MyNoteListPreferences", Context.MODE_PRIVATE).edit().putString("sortfield", "date").commit();
-                    onResume();
                 }
             }
         });

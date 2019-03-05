@@ -43,6 +43,7 @@ public class NoteActivity extends AppCompatActivity {
         }
         else {
             currentNote = new Note();
+            rbLow.toggle();
         }
     }
 
