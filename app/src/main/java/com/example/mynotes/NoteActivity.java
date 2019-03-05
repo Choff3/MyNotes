@@ -19,6 +19,7 @@ import android.widget.ToggleButton;
 public class NoteActivity extends AppCompatActivity {
 
     private Note currentNote;
+    RadioButton rbHigh, rbMed, rbLow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,10 @@ public class NoteActivity extends AppCompatActivity {
         initSaveButton();
         initImportanceClick();
         initTextChangedEvents();
+
+        rbHigh = (RadioButton) findViewById(R.id.radioButtonHigh);
+        rbMed = (RadioButton) findViewById(R.id.radioButtonMedium);
+        rbLow = (RadioButton) findViewById(R.id.radioButtonLow);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -56,6 +61,15 @@ public class NoteActivity extends AppCompatActivity {
 
         editTitle.setText(currentNote.getTitle());
         editContent.setText(currentNote.getContent());
+
+        switch (currentNote.getImportance()){
+            case 3: rbHigh.toggle();
+            break;
+            case 2: rbMed.toggle();
+            break;
+            default: rbLow.toggle();
+        }
+
     }
 
     private void initListButton() {
@@ -106,11 +120,6 @@ public class NoteActivity extends AppCompatActivity {
         bgImportance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup arg0, int arg1) {
-
-                RadioButton rbHigh = (RadioButton) findViewById(R.id.radioButtonHigh);
-                RadioButton rbMed = (RadioButton) findViewById(R.id.radioButtonMedium);
-                RadioButton rbLow = (RadioButton) findViewById(R.id.radioButtonLow);
-
                 if (rbHigh.isChecked())
                     currentNote.setImportance(3);
                 else if (rbMed.isChecked())
