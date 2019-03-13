@@ -11,7 +11,7 @@ public class Note {
     private String content;
 
     public Note(){
-        this.date = new Date();
+        //this.date = new Date();
         this.noteID = -1;
     }
 

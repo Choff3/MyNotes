@@ -35,7 +35,7 @@ public class NoteDataSource {
 
             initialValues.put("title", n.getTitle());
             initialValues.put("content", n.getContent());
-            initialValues.put("date", String.valueOf(n.getDate().getSeconds()));
+            initialValues.put("date", String.valueOf(n.getDate().getTime()));
             initialValues.put("importance", String.valueOf(n.getImportance()));
 
             didSucceed = database.insert("note", null, initialValues) > 0;
@@ -54,7 +54,7 @@ public class NoteDataSource {
 
             updateValues.put("title", n.getTitle());
             updateValues.put("content", n.getContent());
-            updateValues.put("date", String.valueOf(n.getDate().getSeconds()));
+            updateValues.put("date", String.valueOf(n.getDate().getTime()));
             updateValues.put("importance", String.valueOf(n.getImportance()));
 
             didSucceed = database.update("note", updateValues, "_id=" + rowId, null) > 0;
@@ -116,7 +116,7 @@ public class NoteDataSource {
                 newNote.setContent(cursor.getString(2));
                 newNote.setImportance(Integer.valueOf(cursor.getString(3)));
                 Date date = new Date();                         //2
-                date.setSeconds(Integer.valueOf(cursor.getString(4)));
+                date.setTime(Long.valueOf(cursor.getString(4)));
                 newNote.setDate(date);
 
                 notes.add(newNote);
@@ -152,7 +152,7 @@ public class NoteDataSource {
             note.setContent(cursor.getString(2));
             note.setImportance(Integer.valueOf(cursor.getString(3)));
             Date date = new Date();                         //2
-            date.setSeconds(Integer.valueOf(cursor.getString(4)));
+            date.setTime(Long.valueOf(cursor.getString(4)));
             note.setDate(date);
 
             cursor.close();
