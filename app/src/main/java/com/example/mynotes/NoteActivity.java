@@ -64,7 +64,7 @@ public class NoteActivity extends AppCompatActivity {
         EditText editContent = (EditText) findViewById(R.id.editContent);
 
         editTitle.setText(currentNote.getTitle());
-        editContent.setText(currentNote.getContent() + currentNote.getDate());
+        editContent.setText(currentNote.getContent());
 
         switch (currentNote.getImportance()){
             case 3: rbHigh.toggle();
