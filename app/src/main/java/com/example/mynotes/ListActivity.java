@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,7 +35,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        String sortBy = getSharedPreferences("MyNotesPreferences", Context.MODE_PRIVATE).getString("sortfield", "date");
+        String sortBy = getSharedPreferences("MyNoteListPreferences", Context.MODE_PRIVATE).getString("sortfield", "date");
 
         NoteDataSource ds = new NoteDataSource(this);
         try {
@@ -51,8 +52,6 @@ public class ListActivity extends AppCompatActivity {
 
         if (notes.size() > 0) {
             ListView listView = (ListView) findViewById(R.id.lvNotes);
-
-
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
@@ -80,10 +79,12 @@ public class ListActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup arg0, int arg1) {
                 RadioButton rbImp = (RadioButton) findViewById(R.id.radioButtonImportance);
                 if (rbImp.isChecked()) {
-                    getSharedPreferences("MyNoteListPreferences", Context.MODE_PRIVATE).edit() .putString("sortfield", "importance").commit();
+                    getSharedPreferences("MyNoteListPreferences", Context.MODE_PRIVATE).edit().putString("sortfield", "importance").commit();
+                    onResume();
                 }
                 else {
                     getSharedPreferences("MyNoteListPreferences", Context.MODE_PRIVATE).edit().putString("sortfield", "date").commit();
+                    onResume();
                 }
             }
         });

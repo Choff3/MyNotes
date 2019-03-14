@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -105,6 +106,8 @@ public class NoteDataSource {
         try {
             String query = "SELECT  * FROM note ORDER BY " + sortField;
 
+            Log.i("sort", sortField);
+
             Cursor cursor = database.rawQuery(query, null);
 
             Note newNote;
@@ -127,7 +130,51 @@ public class NoteDataSource {
         catch (Exception e) {
             notes = new ArrayList<Note>();
         }
-        return notes;
+
+        /*if(sortField.equals("importance")){
+            return sortImp(notes);
+        }
+        else
+            return sortDate(notes); */
+
+        /*for(int i = 0; i<notes.size(); i++){
+            Log.i("notes", notes.get(i).getTitle());
+        }*/
+
+         return notes;
+    }
+
+    private ArrayList<Note> sortImp(ArrayList<Note> unsorted){
+        ArrayList<Note> sorted = new ArrayList<Note>();
+        for(int i = 0; i<unsorted.size(); i++){
+            if(unsorted.get(i).getImportance()==3)
+                sorted.add(unsorted.get(i));
+        }
+        for(int i = 0; i<unsorted.size(); i++){
+            if(unsorted.get(i).getImportance()==2)
+                sorted.add(unsorted.get(i));
+        }
+        for(int i = 0; i<unsorted.size(); i++){
+            if(unsorted.get(i).getImportance()==1)
+                sorted.add(unsorted.get(i));
+        }
+        Log.i("imp", sorted.toString());
+        return sorted;
+    }
+
+    private ArrayList<Note> sortDate(ArrayList<Note> unsorted){
+        ArrayList<Note> sorted = new ArrayList<Note>();
+        Note max = new Note();
+        for(int i = 0; i<unsorted.size(); i++){
+            for(int j = 0; j<unsorted.size(); j++){
+                if((unsorted.get(i).getDate().compareTo(unsorted.get(j).getDate())) > 0)
+                    max = unsorted.get(i);
+            }
+            sorted.add(max);
+            unsorted.remove(max);
+        }
+        Log.i("date", sorted.toString());
+        return sorted;
     }
 
     public boolean deleteNote(int noteId) {
