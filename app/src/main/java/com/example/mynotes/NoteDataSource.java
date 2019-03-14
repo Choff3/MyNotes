@@ -104,7 +104,7 @@ public class NoteDataSource {
     public ArrayList<Note> getNotes(String sortField) {
         ArrayList<Note> notes = new ArrayList<Note>();
         try {
-            String query = "SELECT  * FROM note ORDER BY " + sortField;
+            String query = "SELECT  * FROM note ORDER BY " + sortField +" DESC";
 
             Log.i("sort", sortField);
 
