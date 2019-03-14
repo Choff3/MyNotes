@@ -82,31 +82,10 @@ public class NoteDataSource {
         return lastId;
     }
 
-    public ArrayList<String> getNoteTitle() {
-        ArrayList<String> noteTitles = new ArrayList<String>();
-        try {
-            String query = "Select title from note";
-            Cursor cursor = database.rawQuery(query, null);
-
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                noteTitles.add(cursor.getString(0));
-                cursor.moveToNext();
-            }
-            cursor.close();
-        }
-        catch (Exception e) {
-            noteTitles = new ArrayList<String>();
-        }
-        return noteTitles;
-    }
-
     public ArrayList<Note> getNotes(String sortField) {
         ArrayList<Note> notes = new ArrayList<Note>();
         try {
             String query = "SELECT  * FROM note ORDER BY " + sortField +" DESC";
-
-            Log.i("sort", sortField);
 
             Cursor cursor = database.rawQuery(query, null);
 
@@ -130,51 +109,7 @@ public class NoteDataSource {
         catch (Exception e) {
             notes = new ArrayList<Note>();
         }
-
-        /*if(sortField.equals("importance")){
-            return sortImp(notes);
-        }
-        else
-            return sortDate(notes); */
-
-        /*for(int i = 0; i<notes.size(); i++){
-            Log.i("notes", notes.get(i).getTitle());
-        }*/
-
          return notes;
-    }
-
-    private ArrayList<Note> sortImp(ArrayList<Note> unsorted){
-        ArrayList<Note> sorted = new ArrayList<Note>();
-        for(int i = 0; i<unsorted.size(); i++){
-            if(unsorted.get(i).getImportance()==3)
-                sorted.add(unsorted.get(i));
-        }
-        for(int i = 0; i<unsorted.size(); i++){
-            if(unsorted.get(i).getImportance()==2)
-                sorted.add(unsorted.get(i));
-        }
-        for(int i = 0; i<unsorted.size(); i++){
-            if(unsorted.get(i).getImportance()==1)
-                sorted.add(unsorted.get(i));
-        }
-        Log.i("imp", sorted.toString());
-        return sorted;
-    }
-
-    private ArrayList<Note> sortDate(ArrayList<Note> unsorted){
-        ArrayList<Note> sorted = new ArrayList<Note>();
-        Note max = new Note();
-        for(int i = 0; i<unsorted.size(); i++){
-            for(int j = 0; j<unsorted.size(); j++){
-                if((unsorted.get(i).getDate().compareTo(unsorted.get(j).getDate())) > 0)
-                    max = unsorted.get(i);
-            }
-            sorted.add(max);
-            unsorted.remove(max);
-        }
-        Log.i("date", sorted.toString());
-        return sorted;
     }
 
     public boolean deleteNote(int noteId) {
