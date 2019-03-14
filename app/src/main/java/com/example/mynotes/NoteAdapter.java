@@ -37,6 +37,16 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
             TextView noteTitle = (TextView) v.findViewById(R.id.textNoteTitle);
             noteTitle.setText(note.getTitle());
+
+            TextView noteImportance = (TextView) v.findViewById(R.id.textImportance);
+            switch(note.getImportance()){
+                case 3: noteImportance.setText("High"); break;
+                case 2: noteImportance.setText("Medium"); break;
+                default: noteImportance.setText("Low"); break;
+            }
+
+            TextView noteDate = (TextView) v.findViewById(R.id.textDate);
+            noteDate.setText(note.getDate().toString());
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,7 +36,7 @@ public class NoteDataSource {
 
             initialValues.put("title", n.getTitle());
             initialValues.put("content", n.getContent());
-            initialValues.put("date", String.valueOf(n.getDate().getSeconds()));
+            initialValues.put("date", String.valueOf(n.getDate().getTime()));
             initialValues.put("importance", String.valueOf(n.getImportance()));
 
             didSucceed = database.insert("note", null, initialValues) > 0;
@@ -54,7 +55,7 @@ public class NoteDataSource {
 
             updateValues.put("title", n.getTitle());
             updateValues.put("content", n.getContent());
-            updateValues.put("date", String.valueOf(n.getDate().getSeconds()));
+            updateValues.put("date", String.valueOf(n.getDate().getTime()));
             updateValues.put("importance", String.valueOf(n.getImportance()));
 
             didSucceed = database.update("note", updateValues, "_id=" + rowId, null) > 0;
@@ -81,29 +82,10 @@ public class NoteDataSource {
         return lastId;
     }
 
-    public ArrayList<String> getNoteTitle() {
-        ArrayList<String> noteTitles = new ArrayList<String>();
-        try {
-            String query = "Select title from note";
-            Cursor cursor = database.rawQuery(query, null);
-
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                noteTitles.add(cursor.getString(0));
-                cursor.moveToNext();
-            }
-            cursor.close();
-        }
-        catch (Exception e) {
-            noteTitles = new ArrayList<String>();
-        }
-        return noteTitles;
-    }
-
     public ArrayList<Note> getNotes(String sortField) {
         ArrayList<Note> notes = new ArrayList<Note>();
         try {
-            String query = "SELECT  * FROM note ORDER BY " + sortField;
+            String query = "SELECT  * FROM note ORDER BY " + sortField +" DESC";
 
             Cursor cursor = database.rawQuery(query, null);
 
@@ -116,7 +98,7 @@ public class NoteDataSource {
                 newNote.setContent(cursor.getString(2));
                 newNote.setImportance(Integer.valueOf(cursor.getString(3)));
                 Date date = new Date();                         //2
-                date.setSeconds(Integer.valueOf(cursor.getString(4)));
+                date.setTime(Long.valueOf(cursor.getString(4)));
                 newNote.setDate(date);
 
                 notes.add(newNote);
@@ -127,7 +109,7 @@ public class NoteDataSource {
         catch (Exception e) {
             notes = new ArrayList<Note>();
         }
-        return notes;
+         return notes;
     }
 
     public boolean deleteNote(int noteId) {
@@ -152,7 +134,7 @@ public class NoteDataSource {
             note.setContent(cursor.getString(2));
             note.setImportance(Integer.valueOf(cursor.getString(3)));
             Date date = new Date();                         //2
-            date.setSeconds(Integer.valueOf(cursor.getString(4)));
+            date.setTime(Long.valueOf(cursor.getString(4)));
             note.setDate(date);
 
             cursor.close();

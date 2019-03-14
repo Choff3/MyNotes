@@ -43,6 +43,7 @@ public class NoteActivity extends AppCompatActivity {
         }
         else {
             currentNote = new Note();
+            currentNote.setDate(new Date());
             rbLow.toggle();
         }
     }
@@ -100,7 +101,6 @@ public class NoteActivity extends AppCompatActivity {
                         wasSuccessful = ds.insertNote(currentNote);
                         int newId = ds.getLastNoteId();
                         currentNote.setNoteID(newId);
-                        currentNote.setDate(new Date());
                     } else {
                         wasSuccessful = ds.updateNote(currentNote);
                     }
